@@ -1,0 +1,19 @@
+.App {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-container {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.map-container {
+  width: 71%;
+  height: 100%;
+}
+
+.leaflet-container {
+  width: 70vw;
+  height: 100vh;
+}

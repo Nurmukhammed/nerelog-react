@@ -1,0 +1,32 @@
+import React, { useState } from "react";
+import CardList from "./components/CardList";
+import Map from "./components/Map";
+import "./App.css";
+import relogApps from "./data/NeRelog_apps.json";
+import relogClients from "./data/NeRelog_clients.json";
+
+function App() {
+  const [data, setData] = useState("");
+
+  const listToApp = (listData: any) => {
+    setData(listData);
+    console.log("data", data);
+  };
+
+  const filteredLocs = relogApps.filter((location) =>
+    relogClients.some((client) => location.client_id === client.id)
+  );
+
+  return (
+    <div className="App">
+      <CardList
+        locs={filteredLocs}
+        clients={relogClients}
+        listToApp={listToApp}
+      />
+      <Map locs={filteredLocs} clients={relogClients} />
+    </div>
+  );
+}
+
+export default App;
