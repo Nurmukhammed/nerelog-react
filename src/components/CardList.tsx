@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
@@ -41,54 +41,71 @@ const Spinner = () => (
 );
 
 const CardList = ({ ...props }: any) => {
+  const isLoaded = useRef(false);
+
+  useEffect(() => {
+    isLoaded.current = true;
+    // cleanup
+    return () => {
+      isLoaded.current = false;
+    };
+  }, []);
+
   return (
     <div className="list-container">
-      <Box sx={{ width: "100%" }}>
-        {props.locs.slice(0, 50).map((data: any) => (
-          <React.Fragment key={data.id}>
-            <LazyLoad height={250} overflow={true} placeholder={<Spinner />}>
-              {props.clients.map((client: any) => (
-                <React.Fragment key={client.id}>
-                  <Box sx={{ my: 3, mx: 2 }}>
-                    <Grid container alignItems="center">
-                      <Grid item xs sx={{ display: "flex" }}>
-                        <Avatar sx={{ bgcolor: deepOrange[500] }}>
-                          {client.name.substring(0, 1)}
-                        </Avatar>
-                        <Typography
-                          gutterBottom
-                          variant="h6"
-                          component="div"
-                          sx={{ marginLeft: "20px" }}
-                          onClick={() => props.setValue(client)}
+      {isLoaded ? (
+        <Box sx={{ width: "100%" }}>
+          {props.locs.slice(0, 50).map((data: any) => (
+            <React.Fragment key={data.id}>
+              <LazyLoad height={250} overflow={true} placeholder={<Spinner />}>
+                {props.clients.map((client: any) => (
+                  <React.Fragment key={client.id}>
+                    <Box sx={{ my: 3, mx: 2 }}>
+                      <Grid container alignItems="center">
+                        <Grid item xs sx={{ display: "flex" }}>
+                          <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                            {client.name.substring(0, 1)}
+                          </Avatar>
+                          <Typography
+                            gutterBottom
+                            variant="h6"
+                            component="div"
+                            sx={{ marginLeft: "20px" }}
+                            onClick={() => props.setValue(client)}
+                          >
+                            {client.name}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography gutterBottom component="div">
+                            {data.price} KZT
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{ marginLeft: "60px", marginTop: "15px" }}
                         >
-                          {client.name}
-                        </Typography>
+                          <Typography color="text.secondary" variant="body2">
+                            Тип заявки:
+                            {data.type === "delivery"
+                              ? " Доставка"
+                              : data.type === "pickup"
+                              ? " Забор"
+                              : ""}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography gutterBottom component="div">
-                          {data.price} KZT
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ marginLeft: "60px", marginTop: "15px" }}>
-                        <Typography color="text.secondary" variant="body2">
-                          Тип заявки:
-                          {data.type === "delivery"
-                            ? " Доставка"
-                            : data.type === "pickup"
-                            ? " Забор"
-                            : ""}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Divider variant="middle" />
-                </React.Fragment>
-              ))}
-            </LazyLoad>
-          </React.Fragment>
-        ))}
-      </Box>
+                    </Box>
+                    <Divider variant="middle" />
+                  </React.Fragment>
+                ))}
+              </LazyLoad>
+            </React.Fragment>
+          ))}
+        </Box>
+      ) : (
+        <p>Загрузка ...</p>
+      )}
     </div>
   );
 };

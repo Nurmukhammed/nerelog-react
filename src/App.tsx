@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import CardList from "./components/CardList";
 import Map from "./components/Map";
 import "./App.css";
