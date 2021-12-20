@@ -60,7 +60,7 @@ const CardList = ({ ...props }: any) => {
                           variant="h6"
                           component="div"
                           sx={{ marginLeft: "20px" }}
-                          onClick={() => props.listToApp(client)}
+                          onClick={() => props.setValue(client)}
                         >
                           {client.name}
                         </Typography>
